@@ -1,9 +1,6 @@
 package com.example.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,10 +11,11 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
-@Data
+@Data()
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString(callSuper = true)
 @Entity
 @Table(name = "posts")
 public class Post extends AbstractAuditableEntity<Long> implements Serializable {
