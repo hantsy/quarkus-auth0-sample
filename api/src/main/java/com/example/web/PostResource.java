@@ -66,7 +66,7 @@ public class PostResource {
     @Path("{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPostById(@PathParam("id") final String id) {
+    public Response getPostById(@PathParam("id") final Long id) {
         return this.posts.findByIdOptional(id)
                 .map(post -> ok(post).build())
                 .orElse(status(NOT_FOUND).build());
@@ -76,7 +76,7 @@ public class PostResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Authenticated
-    public Response updatePost(@PathParam("id") @NotEmpty final String id, @Valid UpdatePostCommand post) {
+    public Response updatePost(@PathParam("id") final Long id, @Valid UpdatePostCommand post) {
         return this.posts.findByIdOptional(id)
                 .map(existed -> {
                     existed.setTitle(post.title());
@@ -92,7 +92,7 @@ public class PostResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Authenticated
-    public Response updatePostStatus(@PathParam("id") @NotEmpty final String id, @Valid UpdatePostStatusCommand status) {
+    public Response updatePostStatus(@PathParam("id") final Long id, @Valid UpdatePostStatusCommand status) {
         return this.posts.findByIdOptional(id)
                 .map(existed -> {
                     existed.setStatus(status.status());
@@ -106,7 +106,7 @@ public class PostResource {
     @Path("{id}")
     @DELETE
     @Authenticated
-    public Response deletePost(@PathParam("id") final String id) {
+    public Response deletePost(@PathParam("id") final Long id) {
         this.posts.deleteById(id);
         return noContent().build();
     }

@@ -28,8 +28,6 @@ public class InlinedPublicKeyAuthorizationTest {
             .post("/posts")
         .then()
             .statusCode(201);
-            // the test endpoint returns the name extracted from the injected SecurityIdentity Principal
-            //.body("userName", equalTo("alice"));
         //@formatter:on
     }
 

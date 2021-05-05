@@ -2,6 +2,7 @@ package com.example.repository;
 
 import com.example.domain.Post;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import io.quarkus.hibernate.orm.panache.runtime.JpaOperations;
 import io.quarkus.panache.common.Sort;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -9,10 +10,10 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @ApplicationScoped
-public class PostRepository implements PanacheRepositoryBase<Post, String> {
+public class PostRepository implements PanacheRepositoryBase<Post, Long> {
 
     public List<Post> findAllPosts() {
-        return this.listAll(Sort.descending("createdAt"));
+        return this.listAll(Sort.descending("createdDate"));
     }
 
 //    public Stream<Post> findByKeyword(String q, int offset, int limit) {
@@ -30,12 +31,12 @@ public class PostRepository implements PanacheRepositoryBase<Post, String> {
 
     public List<Post> findByKeyword(String q, int offset, int limit) {
         if (q == null || q.trim().isEmpty()) {
-            return this.streamAll(Sort.descending("createdAt"))
+            return this.streamAll(Sort.descending("createdDate"))
                     .skip(offset)
                     .limit(limit)
                     .toList();
         } else {
-            return this.find("title like ?1 or content like ?1", Sort.descending("createdAt"), '%' + q + '%')
+            return this.find("title like ?1 or content like ?1", Sort.descending("createdDate"), '%' + q + '%')
                     .page(offset / limit, limit)
                     .list();
         }
@@ -52,8 +53,15 @@ public class PostRepository implements PanacheRepositoryBase<Post, String> {
 
     @Transactional
     public Post save(Post post) {
-        this.persist(post);
-        return post;
+        var em = JpaOperations.getEntityManager();
+        if (post.getId() == null) {
+            this.persistAndFlush(post);
+            return post;
+        } else {
+            var saved = em.merge(post);
+            em.flush();
+            return saved;
+        }
     }
 
 }

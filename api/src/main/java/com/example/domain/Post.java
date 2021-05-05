@@ -20,12 +20,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name = "posts")
-public class Post implements Serializable {
-
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    String id;
+public class Post extends AbstractAuditableEntity<Long> implements Serializable {
 
     @NotEmpty
     String title;
@@ -36,12 +31,6 @@ public class Post implements Serializable {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     Status status = Status.DRAFT;
-
-    @Builder.Default
-    @CreationTimestamp
-    LocalDateTime createdAt = LocalDateTime.now();
-    @UpdateTimestamp
-    LocalDateTime updatedAt;
 
     public static enum Status{
         DRAFT,
