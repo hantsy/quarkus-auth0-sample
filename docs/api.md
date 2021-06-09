@@ -52,7 +52,7 @@ In this post we will focus on how to integrate Quarkus OIDC and Auth0. We have n
 
 Unlike Spring Security, Quarkus Security does not follow the naming (`resourceserver`, `client`and  `authorizationserver` etc.) of OAuth2 roles to categorize the configuration properties.  And most of the official Quarkus OAuth2 and OIDC examples and guides are dependent on [Keycloak](https://www.keycloak.org/) -  the open source OAuth2/OIDC compatible authorization server from Redhat. 
 
-For a backend application,  to protect the API by a JWT token, Quarkus OIDC can help you to parse and verify JWT token. Configure OIDC in the *application.properties*.
+To make Quakrus OIDC work with Auth0, add the following configuration in the *application.properties*.
 
 ```properties
 # Oidc auth config for resource server
@@ -63,6 +63,8 @@ quarkus.oidc.token.audience=https://hantsy.github.io/api
 ```
 
 The default *quarkus.oidc.application-type* is *service*, which is used for identifying the application, *service* is equivalent to *resourceserver* in  Spring Security. When parsing the JWT token,  Quarkus OIDC also can discover the *jwt set url* automatically from  a base *auth-server-url* value if the authorization server supports it. When a token audience is provided, Quarkus will verify it automatically. You can also validate the audience or other items in the JWT token yourself.
+
+> Note: The *quarkus.oidc.client-id* must be provided although this is not an OAuth2 *client* role.
 
 ```java
 //@Provider
