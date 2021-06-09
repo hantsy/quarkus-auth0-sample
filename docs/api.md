@@ -4,7 +4,7 @@ Quarkus has great support of OAuth 2 and OIDC protocol, in this post, we will ex
 
 [Quarkus](https://www.quarkus.io)  is well-known as a *supersonic subatomic Java framework* to build Kubernetes-friendly cloud native applications. In [an earlier post](https://itnext.io/secures-rest-apis-with-spring-security-5-and-auth0-41d579ca1e27) we have discussed  how to secure  RESTful APIs with Spring Security and Auth0, we will implements the same functionality with Quarkus framework.
 
-Go to [Quarkus Start Coding](https://code.quarkus.io/) , make sure you have added extensions: *oidc*, *resteasy*, *resteasy-jackson*, *hibernate-validator* , *hibernate-orm-panache*, *jdbc-postgresql*.  Then generate a project skeleton as usual that we have done in the [former posts](https://itnext.io/building-graphql-apis-with-quarkus-dbbf23f897df). Import the source codes into your IDE.
+Go to [Quarkus Start Coding](https://code.quarkus.io/) page, make sure you have added these extensions: *oidc*, *resteasy*, *resteasy-jackson*, *hibernate-validator* , *hibernate-orm-panache*, *jdbc-postgresql*.  Then generate a project skeleton as usual that we have done in the [former posts](https://itnext.io/building-graphql-apis-with-quarkus-dbbf23f897df). Import the source codes into your IDE.
 
 Open the project *pom.xml* file you should see the following dependencies. Add an extra *Lombok* dependency.
 
@@ -48,11 +48,11 @@ Open the project *pom.xml* file you should see the following dependencies. Add a
 </dependency>
 ```
 
-Here we have no plan to explain the development progress of the API itself, the details of the codes are similar to the one we have discussed in [my introduction to Quarkus](https://hantsy.medium.com/kickstart-your-first-quarkus-application-cde54f469973),  check  out [the source codes  of this post from my github](https://github.com/hantsy/quarkus-auth0-sample) and explore them yourself.
+In this post we will focus on how to integrate Quarkus OIDC and Auth0. We have no plan to explain the development progress of the API itself, the details of the source codes are very similar to the ones we have discussed in [my introduction to Quarkus](https://hantsy.medium.com/kickstart-your-first-quarkus-application-cde54f469973). Before jumping to the next steps,  you can check out [the source codes  of this post from my github](https://github.com/hantsy/quarkus-auth0-sample) and explore them yourself.
 
-Unlike Spring Security, Quarkus Security does not follow the naming(`resourceserver`, `client`and  `authorizationserver` etc. ) of  OAuth2 roles to categorize the configuration properties.  And most of the official Quarkus OAuth2 and OIDC examples and guides are dependent on [Keycloak](https://www.keycloak.org/) -  the open source OAuth2/OIDC compatible authorization server from Redhat.
+Unlike Spring Security, Quarkus Security does not follow the naming (`resourceserver`, `client`and  `authorizationserver` etc.) of OAuth2 roles to categorize the configuration properties.  And most of the official Quarkus OAuth2 and OIDC examples and guides are dependent on [Keycloak](https://www.keycloak.org/) -  the open source OAuth2/OIDC compatible authorization server from Redhat. 
 
-For a backend application,  to protect the API by a JWT token, Quarkus OIDC can help to parse it and verify it.  Configure OIDC in the *application.properties*.
+For a backend application,  to protect the API by a JWT token, Quarkus OIDC can help you to parse and verify JWT token. Configure OIDC in the *application.properties*.
 
 ```properties
 # Oidc auth config for resource server
@@ -62,7 +62,7 @@ quarkus.oidc.token.audience=https://hantsy.github.io/api
 #quarkus.oidc.application-type=service
 ```
 
-The default *quarkus.oidc.application-type* is *service*, which is used for identifying the application, *service* is equivalent to *resourceserver* in  Spring Security. When parsing the JWT token,  Quarkus OIDC also can discover the  *jwt set url* automatically from  a base *auth-server-url* value if the authorization server supports it. When a token audience is provided, Quarkus will verify it automatically. You can also validate the audience or other items in the JWT token yourself.
+The default *quarkus.oidc.application-type* is *service*, which is used for identifying the application, *service* is equivalent to *resourceserver* in  Spring Security. When parsing the JWT token,  Quarkus OIDC also can discover the *jwt set url* automatically from  a base *auth-server-url* value if the authorization server supports it. When a token audience is provided, Quarkus will verify it automatically. You can also validate the audience or other items in the JWT token yourself.
 
 ```java
 //@Provider
@@ -86,9 +86,9 @@ public class AudienceValidator implements ContainerRequestFilter {
 }
 ```
 
-The `OidcConfigurationMetadata` is the OIDC configuration properties of this application.  The `JsonWebToken` is the parsed token claims. The `SecurityIdenity` is a general-purpose security context object to envelope the user principal and roles, similar to the traditional Jakarta EE  `SecurityContext`  API from JaxRS, EJB, etc.
+In the above example, the `OidcConfigurationMetadata` is the OIDC configuration properties of this application.  The `JsonWebToken` is the parsed token claims. The `SecurityIdenity` is a general-purpose security context object to envelope the user principal and roles, similar to the traditional Jakarta EE  `SecurityContext` API from JaxRS, EJB, etc.
 
-To protect the APIs and  make some APIs only be accessible for the authenticated user,  Quarkus Security provides a `@Authenticated` annotation. The following is a modified version of `PostResource` in which we added  a `@Authenticated` on all *write* operations to protect the resources.
+To protect the APIs and make some APIs only be accessible for the authenticated user,  Quarkus Security provides a `@Authenticated` annotation. The following is a modified version of `PostResource` in which we added `@Authenticated` annotations on all *write* operations to protect the resources.
 
 ```java
 @Path("/posts")
@@ -186,9 +186,9 @@ public class PostResource {
 }
 ```
 
-To test the application manually, log in the auth0 dashboard,  follow the steps we have introduced  in [the original Spring Security and Auth0 post](https://itnext.io/secures-rest-apis-with-spring-security-5-and-auth0-41d579ca1e27) to get a token by the Test Application provided by auth0 and then use `curl` command or Postman like tools to access the protected APIs. 
+To test the application manually, log in the auth0 dashboard, follow the steps we have introduced in [the former Spring Security and Auth0 integration post](https://itnext.io/secures-rest-apis-with-spring-security-5-and-auth0-41d579ca1e27) to get a token via the *Test Application* provided by auth0 and then use `curl` command or Postman like tools to access the protected APIs. 
 
-In Spring applications, Spring Security provides test utilities  to mock MVC  in the unit tests, unfortunately Quarkus does not provide such a simple helper .  But there are some possible approaches to test the security concern of the *service* type application.
+In my opinion, Quarkus test framework is not flexible as Spring. In Spring ecosystem, Spring Security provides test utilities to mock MVC and JWT decode in the unit tests, unfortunately Quarkus does not provide such a simple helper. But there are some possible approaches to test the security concern of the *service* type application.
 
 Add the following dependencies in the *pom.xml* file.
 
@@ -206,7 +206,7 @@ Add the following dependencies in the *pom.xml* file.
 </dependency>
 ```
 
-To focus on testing the business logic in Quarkus applications, you can use embedded users  in a properties file to replace the  real users in the database and enable Http Basic authentication to pass by the JWT token authorization.
+To focus on testing the business logic in Quarkus applications, you can set up the embedded users in a properties file to replace the real users in the database and enable Http Basic authentication to pass by the JWT token authorization.
 
 Create a *src/test/resources/application-embedded-users.properties* file to setup the embedded users and  enable *basic* auth .
 
@@ -283,7 +283,7 @@ public class TestSecurityLazyAuthTest {
 }
 ```
 
-Additionally,  you can generate a local RSA public/private key pair to emulate the JWT token verification progress.
+Additionally, you can generate a local RSA public/private key pair to perform the JWT token verification progress.
 
 Generating Keys with OpenSSL. 
 
@@ -357,7 +357,7 @@ public class InlinedPublicKeyAuthorizationTest {
 }
 ```
 
-As you see, use a custom private/public keys in our tests to pass by the public key via jwk set url of the remote authorization server.
+As you see, we used a custom private/public key pair in our tests to pass by fetching the public key via jwk set url from the remote authorization server.
 
 Let's put all together and run the application.
 
