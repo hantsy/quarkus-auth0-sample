@@ -11,7 +11,7 @@ This is a sample project demos how to use OAuth2/Oidc and Auth0 idp service to s
 
 ## Guide
 
-* [Secures APIs with Quakrus OIDC and Auth0](https://hantsy.medium.com/secures-restful-apis-with-quarkus-oidc-and-auth0-643475a9710c)
+* [Secures APIs with Quarkus OIDC and Auth0](https://hantsy.medium.com/secures-restful-apis-with-quarkus-oidc-and-auth0-643475a9710c)
 
 ## Prerequisites
 
