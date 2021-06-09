@@ -16,28 +16,9 @@ import static org.mockito.Mockito.when;
 
 public class PropertiesFileEmbeddedUsersProfile implements QuarkusTestProfile {
     @Override
-    public Map<String, String> getConfigOverrides() {
-        return Map.of(
-                "quarkus.security.users.embedded.enabled", "true",
-                "quarkus.security.users.embedded.plain-text", "true",
-                "quarkus.security.users.embedded.users.alice", "password",
-                "quarkus.security.users.embedded.roles.alice", "user",
-                "quarkus.security.users.embedded.users.admin", "password",
-                "quarkus.security.users.embedded.roles.admin", "admin",
-                "quarkus.http.auth.basic", "true",
-                "quarkus.oidc.enabled","false"
-        );
+    public String getConfigProfile() {
+        return "embedded-users";
     }
-
-    @Override
-    public Set<Class<?>> getEnabledAlternatives() {
-        return QuarkusTestProfile.super.getEnabledAlternatives();
-    }
-
-//    @Override
-//    public String getConfigProfile() {
-//        return "embedded-users";
-//    }
 
     @Dependent
     static class AudienceValidatorProducer {
