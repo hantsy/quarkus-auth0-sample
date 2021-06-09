@@ -1,12 +1,12 @@
 # Secures RESTful APIs with Quarkus OIDC and Auth0
 
-Quarkus has great support of OAuth 2 and OIDC protocol, in this post, we will explore how to protect RESTful APIs with Quarkus OIDC and Auth0.
+Quarkus has great support of OAuth 2 and OIDC protocol. In this post, we will explore how to protect RESTful APIs with Quarkus OIDC and Auth0.
 
-[Quarkus](https://www.quarkus.io)  is well-known as a *supersonic subatomic Java framework* to build Kubernetes-friendly cloud native applications. In [an earlier post](https://itnext.io/secures-rest-apis-with-spring-security-5-and-auth0-41d579ca1e27) we have discussed  how to secure  RESTful APIs with Spring Security and Auth0, we will implements the same functionality with Quarkus framework.
+[Quarkus](https://www.quarkus.io)  is well-known as a *supersonic subatomic Java framework* to build Kubernetes-friendly cloud native applications. In [an earlier post](https://itnext.io/secures-rest-apis-with-spring-security-5-and-auth0-41d579ca1e27) we have discussed  how to secure  RESTful APIs with Spring Security and Auth0, we will implement the same functionality with Quarkus OIDC extension.
 
 Go to [Quarkus Start Coding](https://code.quarkus.io/) page, make sure you have added these extensions: *oidc*, *resteasy*, *resteasy-jackson*, *hibernate-validator* , *hibernate-orm-panache*, *jdbc-postgresql*.  Then generate a project skeleton as usual that we have done in the [former posts](https://itnext.io/building-graphql-apis-with-quarkus-dbbf23f897df). Import the source codes into your IDE.
 
-Open the project *pom.xml* file you should see the following dependencies. Add an extra *Lombok* dependency.
+Open the project *pom.xml* file you should see the following dependencies. Add an extra *Lombok* dependency to clean up the POJOs.
 
 ```xml
 <dependency>
@@ -48,9 +48,11 @@ Open the project *pom.xml* file you should see the following dependencies. Add a
 </dependency>
 ```
 
-In this post we will focus on how to integrate Quarkus OIDC and Auth0. We have no plan to explain the development progress of the API itself, the details of the source codes are very similar to the ones we have discussed in [my introduction to Quarkus](https://hantsy.medium.com/kickstart-your-first-quarkus-application-cde54f469973). Before jumping to the next steps,  you can check out [the source codes  of this post from my github](https://github.com/hantsy/quarkus-auth0-sample) and explore them yourself.
+In this post we will focus on how to integrate Quarkus OIDC and Auth0. We have no plan to explain the development progress of the RESTful APIs, the details of the source codes are very similar to the ones we have discussed in [my introduction to Quarkus](https://hantsy.medium.com/kickstart-your-first-quarkus-application-cde54f469973). Before jumping to the next steps,  check out a copy of [the source codes  of this post from my github](https://github.com/hantsy/quarkus-auth0-sample) and explore them yourself.
 
-Unlike Spring Security, Quarkus Security does not follow the naming (`resourceserver`, `client`and  `authorizationserver` etc.) of OAuth2 roles to categorize the configuration properties.  And most of the official Quarkus OAuth2 and OIDC examples and guides are dependent on [Keycloak](https://www.keycloak.org/) -  the open source OAuth2/OIDC compatible authorization server from Redhat. 
+Unlike Spring Security, Quarkus Security does not follow the naming (`resourceserver`, `client` and  `authorizationserver` etc.) of OAuth2 roles to categorize the configuration properties. Quarkus binds the OAuth2/OIDC configuration properties to functionality name (eg. `quarkus.oidc.xxx`, `quarkus.oidc-flow.xxx`, etc), which are confusing when you are the first time come to Quarkus world.
+
+And most of the official Quarkus OAuth2 and OIDC examples and guides are dependent on [Keycloak](https://www.keycloak.org/) -  the open source OAuth2/OIDC compatible authorization server from Redhat. If you know well about the OAuth2/OIDC protocols, it is not diffcult to move on to Auth0.
 
 To make Quakrus OIDC work with Auth0, add the following configuration in the *application.properties*.
 
@@ -62,9 +64,13 @@ quarkus.oidc.token.audience=https://hantsy.github.io/api
 #quarkus.oidc.application-type=service
 ```
 
-The default *quarkus.oidc.application-type* is *service*, which is used for identifying the application, *service* is equivalent to *resourceserver* in  Spring Security. When parsing the JWT token,  Quarkus OIDC also can discover the *jwt set url* automatically from  a base *auth-server-url* value if the authorization server supports it. When a token audience is provided, Quarkus will verify it automatically. You can also validate the audience or other items in the JWT token yourself.
+The default *quarkus.oidc.application-type* is *service*, which is used for identifying the application type, *service* is equivalent to *resourceserver* in  Spring Security.
 
 > Note: The *quarkus.oidc.client-id* must be provided although this is not an OAuth2 *client* role.
+
+When parsing the JWT token,  Quarkus OIDC also can discover the *jwt set url* automatically from a base *auth-server-url* value if the authorization server supports OIDC configuratoin protocol. 
+
+When a token audience is provided, Quarkus will verify it automatically. You can also validate the audience or other items in the JWT token yourself.
 
 ```java
 //@Provider
