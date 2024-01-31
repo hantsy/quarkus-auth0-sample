@@ -1,0 +1,108 @@
+repo_name: hantsy/quarkus-auth0-sample
+report_id: 744d4a072743b22f64a5130b1f50b90b
+version: 0.1
+repo_type: Public
+timestamp: '2024-01-31T08:44:50+00:00'
+requested_by: hantsy
+provider: github
+branch: master
+detected_tools_count: 8
+tools:
+- name: Java
+  description: A concurrent, class-based, object-oriented, language specifically designed
+    to have as few implementation dependencies as possible
+  website_url: https://www.java.com
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/995/K85ZWV2F.png
+  detection_source_url: https://github.com/hantsy/quarkus-auth0-sample
+  detection_source: Repo Metadata
+- name: Kafka
+  description: Distributed, fault tolerant, high throughput pub-sub messaging system
+  website_url: http://kafka.apache.org/
+  version: 0.11.3
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Data Stores
+  sub_category: Message Queue
+  image_url: https://img.stackshare.io/service/1063/kazUJooF_400x400.jpg
+  detection_source_url: https://github.com/hantsy/quarkus-auth0-sample/blob/master/docker-compose.yml
+  detection_source: docker-compose.yml
+  last_updated_by: Hantsy Bai
+  last_updated_on: 2021-05-05 08:24:39.000000000 Z
+- name: PostgreSQL
+  description: A powerful, open source object-relational database system
+  website_url: http://www.postgresql.org/
+  open_source: true
+  hosted_saas: false
+  category: Data Stores
+  sub_category: Databases
+  image_url: https://img.stackshare.io/service/1028/ASOhU5xJ.png
+  detection_source_url: https://github.com/hantsy/quarkus-auth0-sample/blob/master/docker-compose.yml
+  detection_source: docker-compose.yml
+  last_updated_by: Hantsy Bai
+  last_updated_on: 2021-05-05 08:24:39.000000000 Z
+- name: Docker Compose
+  description: Define and run multi-container applications with Docker
+  website_url: https://github.com/docker/compose
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Container Tools
+  image_url: https://img.stackshare.io/service/3136/docker-compose.png
+  detection_source_url: https://github.com/hantsy/quarkus-auth0-sample/blob/master/docker-compose.yml
+  detection_source: docker-compose.yml
+  last_updated_by: Hantsy Bai
+  last_updated_on: 2021-05-05 08:24:39.000000000 Z
+- name: Git
+  description: Fast, scalable, distributed revision control system
+  website_url: http://git-scm.com/
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Version Control System
+  image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/hantsy/quarkus-auth0-sample
+  detection_source: Repo Metadata
+- name: Apache Camel
+  description: A versatile open source integration framework
+  website_url: https://camel.apache.org/
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Application Hosting
+  sub_category: Platform as a Service
+  image_url: https://img.stackshare.io/service/3276/xWt1RFo6_400x400.jpg
+  detection_source_url: https://github.com/hantsy/quarkus-auth0-sample/blob/master/api/src/main/resources/application.properties
+  detection_source: api/src/main/resources/application.properties
+  last_updated_by: Hantsy Bai
+  last_updated_on: 2021-05-05 08:07:13.000000000 Z
+- name: io.rest-assured:rest-assured
+  description: Java DSL for easy testing of REST services
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/quarkus-auth0-sample/blob/master/api/pom.xml
+  detection_source: api/pom.xml
+  last_updated_by: Hantsy Bai
+  last_updated_on: 2021-05-05 08:07:13.000000000 Z
+- name: org.projectlombok:lombok
+  description: 'Spice up your java: Automatic Resource Management'
+  version: 1.18.20
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/quarkus-auth0-sample/blob/master/api/pom.xml
+  detection_source: api/pom.xml
+  last_updated_by: Hantsy Bai
+  last_updated_on: 2021-05-05 08:07:13.000000000 Z
